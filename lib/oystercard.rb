@@ -15,8 +15,8 @@ attr_reader :balance
     fail "Your balance cannot be over £#{MAXBALANCE}" if @balance > MAXBALANCE
   end
 
-  def deduct(money_spent)
-    @balance -= money_spent
+  def deduct(single_journey)
+    @balance -= single_journey
   end
 
   def touch_in
@@ -26,6 +26,7 @@ attr_reader :balance
 
   def touch_out
     @in_journey = false
+    deduct(@single_journey)
   end
 
   def in_journey?

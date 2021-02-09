@@ -33,6 +33,12 @@ describe '#deduct' do
    @oystercard.deduct(test_value)
    expect(@oystercard.balance).to eq 0
  end
+ it "deducts money of journey after journey completion" do
+  @oystercard.top_up(1)
+  @oystercard.touch_in
+  @oystercard.touch_out
+  expect(@oystercard.balance).to eq 0
+  end
 end
 
 describe '#touch_in' do
