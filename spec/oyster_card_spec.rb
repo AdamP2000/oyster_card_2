@@ -24,11 +24,17 @@ end
 
 describe '#deduct' do
  it "deducts money from balance when you spend money" do
-   oyster_card = OysterCard.new
-   oyster_card.top_up(test_value)
-   oyster_card.deduct(test_value)
-   expect(oyster_card.balance).to eq 0
+   @oystercard.top_up(test_value)
+   @oystercard.deduct(test_value)
+   expect(@oystercard.balance).to eq 0
  end
+end
+
+describe '#touch_in' do
+  it "says you're in a journey when you touch in but don't touch out" do
+  @oystercard.touch_in
+  expect(@oystercard.in_journey?).to eq true
+  end
 end
 
 end
