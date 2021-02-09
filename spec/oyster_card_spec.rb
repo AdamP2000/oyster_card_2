@@ -37,4 +37,12 @@ describe '#touch_in' do
   end
 end
 
+describe '#touch_out' do
+  it "says you are not in a journey after touching in and touching out" do
+    @oystercard.touch_in
+    @oystercard.touch_out
+    expect(@oystercard.in_journey?).to eq false  
+  end
+end
+
 end
