@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe OysterCard do
+  let(:station){ double :station }
  test_value = 50
 
  before(:each) do
@@ -35,7 +36,7 @@ describe '#deduct' do
  end
  it "deducts money of journey after journey completion" do
   @oystercard.top_up(1)
-  @oystercard.touch_in
+  @oystercard.touch_in(station)
   @oystercard.touch_out
   expect(@oystercard.balance).to eq 0
   end
@@ -44,22 +45,30 @@ end
 describe '#touch_in' do
   it "says you're in a journey when you touch in but don't touch out" do
   @oystercard.top_up(1)
-  @oystercard.touch_in
+  @oystercard.touch_in(station)
   expect(@oystercard.in_journey?).to eq true
   end
 
   it"raises an error if there isn't enough balance for single journey" do
-    expect{ @oystercard.touch_in }.to raise_error 'Not enough balance'
+    expect{ @oystercard.touch_in(station) }.to raise_error 'Not enough balance'
   end
+
+    it 'saves users entry station' do
+      subject.top_up(1)
+      expect(subject.touch_in(station)).to eq station
+    end
+  
 end
 
 describe '#touch_out' do
   it "says you are not in a journey after touching in and touching out" do
     @oystercard.top_up(1)
-    @oystercard.touch_in
+    @oystercard.touch_in(station)
     @oystercard.touch_out
     expect(@oystercard.in_journey?).to eq false
   end
 end
+
+ 
 
 end
