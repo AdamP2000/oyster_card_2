@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe OysterCard do
   let(:station){ double :station }
+  let(:station_2){ double :station_2 }
  test_value = 50
 
  before(:each) do
@@ -37,7 +38,7 @@ describe '#deduct' do
  it "deducts money of journey after journey completion" do
   @oystercard.top_up(1)
   @oystercard.touch_in(station)
-  @oystercard.touch_out
+  @oystercard.touch_out(station_2)
   expect(@oystercard.balance).to eq 0
   end
 end
@@ -49,26 +50,39 @@ describe '#touch_in' do
   expect(@oystercard.in_journey?).to eq true
   end
 
-  it"raises an error if there isn't enough balance for single journey" do
+  it "raises an error if there isn't enough balance for single journey" do
     expect{ @oystercard.touch_in(station) }.to raise_error 'Not enough balance'
   end
 
     it 'saves users entry station' do
-      subject.top_up(1)
-      expect(subject.touch_in(station)).to eq station
+      @oystercard.top_up(1)
+      expect(@oystercard.touch_in(station)).to eq station
     end
-  
+
 end
 
 describe '#touch_out' do
   it "says you are not in a journey after touching in and touching out" do
     @oystercard.top_up(1)
     @oystercard.touch_in(station)
-    @oystercard.touch_out
+    @oystercard.touch_out(station_2)
     expect(@oystercard.in_journey?).to eq false
   end
 end
 
- 
+describe '#journeys' do
+  it "has an empty list of journeys by default" do
+    expect(@oystercard.journeys).to eq []
+  end
+  it "creates one journey after touching in and out" do
+    @oystercard.top_up(1)
+    @oystercard.touch_in(station)
+    @oystercard.touch_out(station_2)
+    expect((@oystercard.journeys).length).to eq 1
+  end
+end
+
+
+
 
 end
