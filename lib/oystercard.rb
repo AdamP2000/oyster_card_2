@@ -29,8 +29,9 @@ attr_reader :balance, :entry_station, :journeys, :exit_station
 
   def touch_out(station_2)
     deduct(@single_journey)
-    @entry_station = nil
     @exit_station = station_2
+    @journeys << {entry_station => @entry_station, exit_station => @exit_station}
+    @entry_station = nil
   end
 
   def in_journey?
